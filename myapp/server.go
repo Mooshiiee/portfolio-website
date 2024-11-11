@@ -12,7 +12,6 @@ func main() {
 
 	// serve static content
 	e.Static("/", "public")
-
 	// load html files
 	indexBlob, err := os.ReadFile("public/index.html")
 	if err != nil {
