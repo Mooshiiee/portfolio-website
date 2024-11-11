@@ -117,7 +117,7 @@
             <div class="flex flex-wrap justify-evenly pt-4">
                 <div class="flex flex-wrap my-auto pb-4 md:pt-4 gap-x-6 md:flex-col">
                     <div>
-                        <p class="pt-4">Languages I enjoy</p>
+                        <p>Languages I enjoy</p>
                         <ul class="list-disc ml-5">
                             <li>Python</li>
                             <li>JavaScript/TypeScript</li>
@@ -140,9 +140,9 @@
                 <img
                     alt="Photo of Mustafa Bolat posing in front of an old European marble fountain"
                     id="meImage"
-                    src="./images/me.JPG"
-                    width="624"
-                    height="416"
+                    src="./images/gopher-dance-long-3x.gif"
+                    height="100"
+                    class="pb-24 pt-36 px-20"
                 />
             </div>
         </div>
@@ -223,29 +223,128 @@
     
         // Add text
         const text2 = new fabric.Text('Made with:', {
-            left: 200,
-            top: 50,
+            left: 1450,
+            top: 5,
             fontFamily: 'Arial',
             fill: '#2c3e50',
             fontSize: 20
         });
 
         fabric.Image.fromURL('/images/django.png', function(oImg) {
-            img = oImg.set({left: 210, top: 250, angle: -20})
+            img = oImg.set({left: 210, top: 320, angle: -20})
             img.scaleToWidth(180)
             canvas2.add(img)
         });
 
-        fabric.Image.fromURL('/images/me.jpg', function(img) {
-            img.scaleToWidth(624)
+        fabric.Image.fromURL('/images/me.jpg', function(oimg) {
+            img = oimg.set({left: 700, top: 375, angle:2})
+            img.scaleToWidth(650)
             canvas2.add(img)
         })
 
+        fabric.Image.fromURL('/images/turso.png', function(oimg) {
+            img = oimg.set({left: 110, top: 350, angle: 10})
+            img.scaleToWidth(230)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/sqlite.png', function(oimg) {
+            img = oimg.set({left: 1400, top: 370, angle: -2})
+            img.scaleToWidth(180)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/mysql.png', function(oimg) {
+            img = oimg.set({left: 1420, top: 450, angle: 11})
+            img.scaleToWidth(180)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/gospider.png', function(oimg) {
+            img = oimg.set({left: 1410, top: 30, angle: -5})
+            img.scaleToWidth(120)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/echo.png', function(oimg) {
+            img = oimg.set({left: 1330, top: 130, angle: 3})
+            img.scaleToWidth(140)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/fjs.png', function(oimg) {
+            img = oimg.set({left: 1450, top: 200, angle: -7})
+            img.scaleToWidth(140)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/do.png', function(oimg) {
+            img = oimg.set({left: 1515, top: 70, angle: 6})
+            img.scaleToWidth(140)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/heroku.png', function(oimg) {
+            img = oimg.set({left: 90, top: 660})
+            img.scaleToWidth(140)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/porkbun.png', function(oimg) {
+            img = oimg.set({left: 1270, top: 170, angle: 18})
+            img.scaleToWidth(200)
+            canvas2.add(img)
+        })
         
+        fabric.Image.fromURL('/images/supabase.png', function(oimg) {
+            img = oimg.set({left: 1400, top: 580, angle: 3})
+            img.scaleToWidth(180)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/medusa.png', function(oimg) {
+            img = oimg.set({left: 80, top: 520, angle: -12})
+            img.scaleToWidth(200)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/python.png', function(oimg) {
+            img = oimg.set({left: 50, top: 40, angle: 15})
+            img.scaleToWidth(160)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/js.png', function(oimg) {
+            img = oimg.set({left: 120, top: 200, angle: 15})
+            img.scaleToWidth(120)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/ts.png', function(oimg) {
+            img = oimg.set({left: 185, top: 75, angle: -12})
+            img.scaleToWidth(160)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/flask.png', function(oimg) {
+            img = oimg.set({left: 220, top: 570, angle: -12})
+            img.scaleToWidth(160)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/owl.png', function(oimg) {
+            img = oimg.set({left: 1000, top: 10})
+            img.scaleToWidth(200)
+            canvas2.add(img)
+        })
+
+
+
+
         canvas2.add(rect2, circle2, text2);
 
-        // Add multiple objects
-        for (let i = 0; i < 5; i++) {
+        // Add multiple random objects
+        for (let i = 0; i < 10; i++) {
             canvas2.add(createRandomObject());
         }
     
@@ -266,7 +365,7 @@
     <!-- Modern Projects Section with gradient background -->
     <div class="pt-16">
         <div class="max-w-7xl mx-auto px-4">
-            <h2 class="text-3xvl font-bold text-slate-800 mb-12 text-center">Projects</h2>
+            <h2 class="text-3xl font-bold text-slate-800 mb-12 text-center">Projects</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
 
