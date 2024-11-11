@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./static/output.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/pts/dist/pts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
+    <title>Mustafa Bolat</title>
+</head>
+<body class="scroll-smooth">
+
+    <div class="hero">
+        <canvas id="pt" width="800" height="300"></canvas>
+    </div>
+    
+    <script>
+        Pts.quickStart( "#pt", "#ffffff" );
+    
+        (function() {
+          var de = new Delaunay();
+          var triangles = [];
+          var cells = [];
+          var lastPt = new Pt();
+    
+          let repel = (size) => {
+            for (let k = 0, len = de.length; k < len; k++) {
+              for (let i = 0; i < len; i++) {
+                if (i !== k) {
+                  let d = de[k].$subtract(de[i]);
+                  if (d.magnitudeSq() < size * size) {
+                    de[k].subtract(d.$divide(-size / 3));
+                    de[i].subtract(d.$divide(size / 3));
+                  }
+                }
+              }
+            }
+          };
+    
+          space.add({
+            start: (bound) => {
+              de = Create.delaunay(Create.distributeRandom(space.innerBound, 9));
+              triangles = de.delaunay();
+              cells = de.voronoi();
+            },
+    
+            animate: (time, ftime) => {
+              form.strokeOnly("#ff7f50", 1.5).polygons(triangles);
+              form.fill("#007aff").points(de, 6, "circle");
+              form.strokeOnly("#32cd32", 1).polygons(cells);
+    
+              if (de.length >= 100) {
+                de[de.length - 1] = space.pointer;
+                repel(70);
+                triangles = de.delaunay();
+                cells = de.voronoi();
+    
+                let nearIndex = Polygon.nearestPt(de, space.pointer);
+                de.neighbors(nearIndex, true).map((n) => {
+                  form.strokeOnly("rgba(0, 123, 255, 0.9)", 3).polygon(n.triangle);
+                  form.strokeOnly("rgba(0, 123, 255, 0.3)", 1).circle(n.circle);
+                  form.fillOnly("#ffe066").point(n.circle[0], 3);
+                });
+              }
+            },
+    
+            action: (type, x, y) => {
+              if (type === "move" && de.length < 100) {
+                let p = new Pt(x, y);
+                if (lastPt.$subtract(p).magnitudeSq() > 400) {
+                  lastPt = p;
+                  de.push(p);
+                  triangles = de.delaunay();
+                  cells = de.voronoi();
+                }
+              }
+            }
+          });
+    
+          space.bindMouse().bindTouch().play();
+    
+        })();
+    </script>
+    
+    <div class="relative border-t-2 border-orange-400 max-w">
+   
+    <div id="featuredBanner" class="relative">
+        <!-- Canvas Container -->
+        <div class="absolute inset-0">
+            <canvas id="canvasBanner"></canvas>
+        </div>
+        
+        <!-- Overlaid Text -->
+        <div class="relative -z-10 justify-center max-w-7xl mx-auto text-gray-800">
+            <div class="px-4 max-w-4xl mx-auto">
+                <h1 class="text-2xl font-bold mb-4 mt-6">About Me</h1>
+                <h2 class="text-xl font-bold mb-3 mt-5">Hello, my name is <span>Mustafa</span></h2>
+                <h3 class="text-lg font-bold mb-2 mt-4">I am an aspiring fullstack application developer</h3>
+    
+                <div class="mb-4">Southern Connecticut State University 2025 - BS Computer Science, Minor in Mathematics</div>
+    
+                <h3 class="text-lg font-bold mb-2 mt-4">I recognize the power us developers have to shape the land around us</h3>
+    
+                <p class="mb-4">
+                    "This principle, which concerns the quality of life of all people, 
+                    affirms an obligation of computing professionals,<br /> both individually and 
+                    collectively, to use their skills for the benefit of society, its members, 
+                    and the environment surrounding them."
+                </p>
+                <p class="mb-4">
+                    "People—including users, customers, colleagues, and others affected 
+                    directly or indirectly—should always be the central concern in 
+                    computing"
+                </p>
+                <sub class="text-sm">- ACM Code of Ethics</sub>
+            </div>
+            <div class="flex flex-wrap justify-evenly pt-4">
+                <div class="flex flex-wrap my-auto pb-4 md:pt-4 gap-x-6 md:flex-col">
+                    <div>
+                        <p class="pt-4">Languages I enjoy</p>
+                        <ul class="list-disc ml-5">
+                            <li>Python</li>
+                            <li>JavaScript/TypeScript</li>
+                            <li>I know a little Go</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <p class="pt-4">Favorite Libraries</p>
+                        <ul class="list-disc ml-5">
+                            <li>Django</li>
+                            <li>ReactJS</li>
+                            <li>TailwindCSS</li>
+                            <li>Echo</li>
+                            <li>NextJS</li>
+                        </ul>
+                    </div>
+                </div>
+    
+                <img
+                    alt="Photo of Mustafa Bolat posing in front of an old European marble fountain"
+                    id="meImage"
+                    src="./images/me.JPG"
+                    width="624"
+                    height="416"
+                />
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Initialize Fabric canvas to match container size
+        const container = document.querySelector('#featuredBanner');
+        const canvas2 = new fabric.Canvas('canvasBanner', {
+            width: container.offsetWidth,
+            height: container.offsetHeight,
+        });
+    
+        // Create some interactive objects
+        function createRandomObject() {
+            const types = ['rect2', 'circle2', 'triangle2'];
+            const type = types[Math.floor(Math.random() * types.length)];
+            const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f', '#9b59b6'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            let obj;
+            switch(type) {
+                case 'rect2':
+                    obj = new fabric.Rect({
+                        width: 60,
+                        height: 60,
+                        fill: color,
+                        opacity: 0.7
+                    });
+                    break;
+                case 'circle2':
+                    obj = new fabric.Circle({
+                        radius: 30,
+                        fill: color,
+                        opacity: 0.7
+                    });
+                    break;
+                case 'triangle2':
+                    obj = new fabric.Triangle({
+                        width: 60,
+                        height: 60,
+                        fill: color,
+                        opacity: 0.7
+                    });
+                    break;
+            }
+            
+            obj.set({
+                left: Math.random() * (canvas2.width - 60),
+                top: Math.random() * (canvas2.height - 60),
+                cornerColor: '#2c3e50',
+                cornerStrokeColor: '#2c3e50',
+                borderColor: '#2c3e50',
+                cornerSize: 6,
+                transparentCorners: false
+            });
+            
+            return obj;
+        }
+    
+        // Create basic shapes
+        const rect2 = new fabric.Rect({
+            left: 100,
+            top: 100,
+            fill: '#3498db',
+            width: 60,
+            height: 60,
+            opacity: 0.8
+        });
+    
+        const circle2 = new fabric.Circle({
+            left: 300,
+            top: 150,
+            fill: '#e74c3c',
+            radius: 30,
+            opacity: 0.8
+        });
+    
+        // Add text
+        const text2 = new fabric.Text('Made with:', {
+            left: 200,
+            top: 50,
+            fontFamily: 'Arial',
+            fill: '#2c3e50',
+            fontSize: 20
+        });
+
+        fabric.Image.fromURL('/images/django.png', function(oImg) {
+            img = oImg.set({left: 210, top: 250, angle: -20})
+            img.scaleToWidth(180)
+            canvas2.add(img)
+        });
+
+        fabric.Image.fromURL('/images/me.jpg', function(img) {
+            img.scaleToWidth(624)
+            canvas2.add(img)
+        })
+
+        
+        canvas2.add(rect2, circle2, text2);
+
+        // Add multiple objects
+        for (let i = 0; i < 5; i++) {
+            canvas2.add(createRandomObject());
+        }
+    
+        // Make canvas responsive
+        window.addEventListener('resize', () => {
+            canvas2.setDimensions({
+                width: container.offsetWidth,
+                height: container.offsetHeight
+            });
+        });
+    </script>
+
+    
+    </div>
+
+    <div class="bg-gradient-to-b from-white via-slate-400 via-50% to-slate-900 py-16">
+        
+    <!-- Modern Projects Section with gradient background -->
+    <div class="pt-16">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-3xvl font-bold text-slate-800 mb-12 text-center">Projects</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all hover:shadow-2xl">
+                    <img
+                    alt=""
+                    src="./images/cb_image.png"
+                    class="min-h-52 w-full object-cover rounded-t-xl"
+                    />
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Calypso Blue Pool & Spa</h3>
+                        <p class="text-slate-600 mb-4">An eCommerce website built for a client using MedusaJS backend, Supabase PostgreSQL, and Next.js with TailwindCSS. Hosted on Heroku and Vercel. Expected release on Nov 25</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-sm">MedusaJS</span>
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Supabase PostgreSQL</span>
+                            <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">Next.js</span>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Heroku</span>
+                            <span class="px-3 py-1 bg-slate-800 text-white rounded-full text-sm">Vercel</span>
+                            <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">Redis</span>
+                        </div>
+                        <span class="inline-flex items-center px-4 py-2 bg-slate-500 text-white rounded-lg hover:bg-slate-700 transition-colors">
+                            Coming Soon
+                        </span>
+                    </div>
+                </div>
+
+                <!-- CSweekly Card -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all hover:shadow-2xl">
+                    <img
+                    alt=""
+                    src="./images/csw_image.png"
+                    class="min-h-52 w-full object-cover rounded-t-xl"
+                    />
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">csweekly</h3>
+                        <p class="text-slate-600 mb-4">
+                            A Go-based website using Echo framework to host weekly coding problems for the SCSU Computer Science Club. 
+                            Uses a cloud database from Turso and is hosted on Digital Ocean. Beautifully sleek and minimalist design.
+                        </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">Go</span>
+                            <span class="px-3 py-1 bg-cyan-100 text-cyan-800 rounded-full text-sm">Echo</span>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Tailwind</span>
+                            <span class="px-3 py-1 bg-lime-100 text-lime-800 rounded-full text-sm">Turso</span>
+                        </div>
+                        <a href="https://csweekly.xyz" target="_blank" class="inline-flex items-center px-4 py-2 bg-slate-800 text-white rounded-lg transition-colors hover:bg-gradient-to-r hover:from-violet-600 hover:to-amber-300">
+                            Go To Site
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
+                        <a href="https://github.com/Mooshiiee/csweekly_echo" target="_blank" class="inline-flex items-center px-4 py-2 mt-3 bg-green-600 text-white rounded-lg transition-colors hover:bg-gradient-to-r hover:from-green-500 hover:to-teal-500">
+                            Open Source
+                            <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.16 6.84 9.5.5.1.66-.21.66-.47 0-.23-.01-.85-.01-1.67-2.78.6-3.37-1.34-3.37-1.34-.45-1.14-1.1-1.44-1.1-1.44-.9-.61.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.64.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.5 9.5 0 0 1 12 6.8a9.47 9.47 0 0 1 2.51.34c1.9-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.69-4.57 4.93.36.31.69.91.69 1.83 0 1.32-.01 2.39-.01 2.72 0 .26.17.58.67.48C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all hover:shadow-2xl">
+                    <img
+                    alt=""
+                    src="./images/cit_image.png"
+                    class="min-h-52 w-full object-cover rounded-t-xl"
+                    />
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">Community IT Project</h3>
+                        <p class="text-slate-600 mb-4">A digital literacy resource website using Django Web Framework and SQLite. My first Website! Has CRUD functionality with local SQLite database</p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Django</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">SQLite</span>
+                            <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">W3.CSS</span>
+                        </div>
+                        <a href="https://communityitproject.org" class="inline-flex items-center px-4 py-2 bg-slate-800 text-white rounded-lg transition-colors hover:bg-gradient-to-r hover:from-sky-300 hover:to-yellow-100 hover:text-black">
+                            Go To Site
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
+                        <a href="https://github.com/Mooshiiee/CommunityITProject" target="_blank" class="inline-flex items-center px-4 py-2 mt-3 bg-green-600 text-white rounded-lg transition-colors hover:bg-gradient-to-r hover:from-green-500 hover:to-teal-500">
+                            Open Source
+                            <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.16 6.84 9.5.5.1.66-.21.66-.47 0-.23-.01-.85-.01-1.67-2.78.6-3.37-1.34-3.37-1.34-.45-1.14-1.1-1.44-1.1-1.44-.9-.61.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.64.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.5 9.5 0 0 1 12 6.8a9.47 9.47 0 0 1 2.51.34c1.9-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.69-4.57 4.93.36.31.69.91.69 1.83 0 1.32-.01 2.39-.01 2.72 0 .26.17.58.67.48C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- OpenTutors Card -->
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all hover:shadow-2xl">
+                    <img
+                    alt=""
+                    src="./images/op_image.png"
+                    class="min-h-52 w-full object-cover rounded-t-xl"
+                    />
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-slate-800 mb-2">OpenTutors</h3>
+                        <p class="text-slate-600 mb-4">A tutoring platform using Django REST Framework for backend API and React.js with MaterialUI for the frontend. Uses Django Knox authenticaiton and Client-side routing. </p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Django REST</span>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">React</span>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Axios</span>
+                            <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">React Router</span>
+        
+                        </div>
+                        <a href="https://github.com/Mooshiiee/OpenTutors" target="_blank" class="inline-flex items-center px-4 py-2 mt-3 bg-green-600 text-white rounded-lg transition-colors hover:bg-gradient-to-r hover:from-green-500 hover:to-teal-500">
+                            Open Source
+                            <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.16 6.84 9.5.5.1.66-.21.66-.47 0-.23-.01-.85-.01-1.67-2.78.6-3.37-1.34-3.37-1.34-.45-1.14-1.1-1.44-1.1-1.44-.9-.61.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.64.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.5 9.5 0 0 1 12 6.8a9.47 9.47 0 0 1 2.51.34c1.9-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.69-4.57 4.93.36.31.69.91.69 1.83 0 1.32-.01 2.39-.01 2.72 0 .26.17.58.67.48C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="mt-16 text-center">
+                <h2 class="text-2xl font-bold text-white mb-8">Let's Connect! </h2>
+                <div class="flex justify-center space-x-4">
+
+                    <a href="https://github.com/Mooshiiee" 
+                    class="px-6 py-3 bg-slate-500 text-white rounded-lg transition-all duration-300 inline-flex items-center hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-500">
+                        <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"/>
+                        </svg>
+                        GitHub
+                    </a>
+
+                    <a href="mailto:mooshcor@outlook.com" 
+                    class="px-6 py-3 bg-slate-500 text-white rounded-lg transition-all duration-300 inline-flex items-center hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-500">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                        </svg>
+                        mooshcor@outlook.com
+                    </a>
+
+                    <a href="./static/resume.pdf" 
+                    class="px-6 py-3 bg-slate-500 text-white rounded-lg transition-all duration-300 inline-flex items-center hover:bg-gradient-to-r hover:from-cyan-500 hover:to-teal-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
+                        </svg>
+                        Resume
+                    </a>
+
+                    <a href="https://LinkedIn.com/in/mustafabolat1" 
+                    class="px-6 py-3 bg-slate-500 text-white rounded-lg transition-all duration-300 inline-flex items-center hover:bg-gradient-to-r hover:from-teal-500 hover:to-emerald-500">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>
+                        </svg>
+                        LinkedIn
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+</body>
+</html>
