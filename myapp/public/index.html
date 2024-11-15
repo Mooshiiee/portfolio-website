@@ -8,7 +8,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.1/fabric.min.js"></script>
     <title>Mustafa Bolat</title>
 </head>
-<body class="scroll-smooth">
+<body>
 
     <div class="hero">
         <canvas id="pt" width="800" height="300"></canvas>
@@ -84,7 +84,7 @@
     
     <div class="relative border-t-2 border-orange-400 max-w">
    
-    <div id="featuredBanner" class="relative pt-96 sm:pt-0">
+    <div id="featuredBanner" class="relative pt-96 sm:pt-0 sm:pb-32">
         <!-- Canvas Container -->
         <div class="absolute inset-0">
             <canvas id="canvasBanner"></canvas>
@@ -114,8 +114,9 @@
                 </p>
                 <sub class="text-sm">- ACM Code of Ethics</sub>
             </div>
-            <div class="flex flex-wrap justify-evenly pt-4">
-                <div class="flex flex-wrap my-auto pb-4 md:pt-4 gap-x-6 md:flex-col">
+
+            <div class="flex flex-wrap justify-evenly pt-0">
+                <div class="flex flex-wrap my-auto pb-4 gap-x-6 md:flex-col">
                     <div>
                         <p>Languages I enjoy</p>
                         <ul class="list-disc ml-5">
@@ -152,11 +153,38 @@
     </div>
     
     <script>
+        //script to help scroll on mobile
+        (function() {
+          var addListener = fabric.util.addListener,
+                  removeListener = fabric.util.removeListener,
+                  addEventOptions = { passive: false };
+
+          fabric.util.object.extend(fabric.Canvas.prototype, /** @lends fabric.Canvas.prototype */ {
+            _onTouchStart: function(e) {
+              var targetR = this.findTarget(e);
+              !this.allowTouchScrolling && e.preventDefault && e.preventDefault();
+              targetR && e.preventDefault && e.preventDefault();
+              if (this.mainTouchId === null) {
+                this.mainTouchId = this.getPointerId(e);
+              }
+              this.__onMouseDown(e);
+              this._resetTransformEventData();
+              var canvasElement = this.upperCanvasEl,
+              eventTypePrefix = this._getEventPrefix();
+              addListener(fabric.document, 'touchend', this._onTouchEnd, addEventOptions);
+              addListener(fabric.document, 'touchmove', this._onMouseMove, addEventOptions);
+              // Unbind mousedown to prevent double triggers from touch devices
+              removeListener(canvasElement, eventTypePrefix + 'down', this._onMouseDown);
+            }
+          });
+        })();
+
         // Initialize Fabric canvas to match container size
         const container = document.querySelector('#featuredBanner');
         const canvas2 = new fabric.Canvas('canvasBanner', {
             width: container.offsetWidth,
             height: container.offsetHeight,
+            allowTouchScrolling: true,
         });
     
         // Create some interactive objects
@@ -226,7 +254,7 @@
     
         // Add text
         const text2 = new fabric.Text('Made with:', {
-            left: 1450,
+            left: 1400,
             top: 5,
             fontFamily: 'Arial',
             fill: '#2c3e50',
@@ -234,115 +262,112 @@
         });
 
         fabric.Image.fromURL('/images/django.png', function(oImg) {
-            img = oImg.set({left: 210, top: 320, angle: -20})
+            img = oImg.set({left: 250, top: 320, angle: -20})
             img.scaleToWidth(180)
             canvas2.add(img)
         });
 
         fabric.Image.fromURL('/images/me.jpg', function(oimg) {
-            img = oimg.set({left: 700, top: 375, angle:2})
+            img = oimg.set({left: 650, top: 375, angle:2})
             img.scaleToWidth(650)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/turso.png', function(oimg) {
-            img = oimg.set({left: 110, top: 350, angle: 10})
+            img = oimg.set({left: 150, top: 350, angle: 10})
             img.scaleToWidth(230)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/sqlite.png', function(oimg) {
-            img = oimg.set({left: 1400, top: 370, angle: -2})
+            img = oimg.set({left: 1290, top: 370, angle: -2})
             img.scaleToWidth(180)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/mysql.png', function(oimg) {
-            img = oimg.set({left: 1420, top: 450, angle: 11})
+            img = oimg.set({left: 1320, top: 450, angle: 11})
             img.scaleToWidth(180)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/gospider.png', function(oimg) {
-            img = oimg.set({left: 1410, top: 30, angle: -5})
+            img = oimg.set({left: 1380, top: 30, angle: -5})
             img.scaleToWidth(120)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/echo.png', function(oimg) {
-            img = oimg.set({left: 1330, top: 130, angle: 3})
+            img = oimg.set({left: 1300, top: 130, angle: 3})
             img.scaleToWidth(140)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/fjs.png', function(oimg) {
-            img = oimg.set({left: 1450, top: 200, angle: -7})
+            img = oimg.set({left: 1420, top: 200, angle: -7})
             img.scaleToWidth(140)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/do.png', function(oimg) {
-            img = oimg.set({left: 1515, top: 70, angle: 6})
+            img = oimg.set({left: 1485, top: 70, angle: 6})
             img.scaleToWidth(140)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/heroku.png', function(oimg) {
-            img = oimg.set({left: 90, top: 660})
+            img = oimg.set({left: 130, top: 660})
             img.scaleToWidth(140)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/porkbun.png', function(oimg) {
-            img = oimg.set({left: 1270, top: 170, angle: 18})
+            img = oimg.set({left: 1240, top: 170, angle: 18})
             img.scaleToWidth(200)
             canvas2.add(img)
         })
-        
+
         fabric.Image.fromURL('/images/supabase.png', function(oimg) {
-            img = oimg.set({left: 1400, top: 580, angle: 3})
+            img = oimg.set({left: 1310, top: 580, angle: 3})
             img.scaleToWidth(180)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/medusa.png', function(oimg) {
-            img = oimg.set({left: 80, top: 520, angle: -12})
+            img = oimg.set({left: 120, top: 520, angle: -12})
             img.scaleToWidth(200)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/python.png', function(oimg) {
-            img = oimg.set({left: 50, top: 40, angle: 15})
+            img = oimg.set({left: 130, top: 40, angle: 15})
             img.scaleToWidth(160)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/js.png', function(oimg) {
-            img = oimg.set({left: 120, top: 200, angle: 15})
+            img = oimg.set({left: 160, top: 200, angle: 15})
             img.scaleToWidth(120)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/ts.png', function(oimg) {
-            img = oimg.set({left: 185, top: 75, angle: -12})
+            img = oimg.set({left: 225, top: 75, angle: -12})
             img.scaleToWidth(160)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/flask.png', function(oimg) {
-            img = oimg.set({left: 220, top: 570, angle: -12})
-            img.scaleToWidth(160)
+            img = oimg.set({left: 280, top: 570, angle: -12})
+            img.scaleToWidth(110)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/owl.png', function(oimg) {
-            img = oimg.set({left: 1000, top: 10})
+            img = oimg.set({left: 970, top: 10})
             img.scaleToWidth(200)
             canvas2.add(img)
         })
-
-
-
 
         canvas2.add(rect2, circle2, text2);
 
@@ -366,7 +391,7 @@
     <div class="bg-gradient-to-b from-white via-slate-400 via-50% to-slate-900 py-16">
         
     <!-- Modern Projects Section with gradient background -->
-    <div class="pt-16">
+    <div class="pt-8">
         <div class="max-w-7xl mx-auto px-4">
             <h2 class="text-3xl font-bold text-slate-800 mb-12 text-center">Projects</h2>
             
