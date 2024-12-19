@@ -254,7 +254,7 @@
     
         // Add text
         const text2 = new fabric.Text('Made with:', {
-            left: 1400,
+            left: 1300,
             top: 5,
             fontFamily: 'Arial',
             fill: '#2c3e50',
@@ -292,25 +292,25 @@
         })
 
         fabric.Image.fromURL('/images/gospider.png', function(oimg) {
-            img = oimg.set({left: 1380, top: 30, angle: -5})
+            img = oimg.set({left: 1290, top: 30, angle: -5})
             img.scaleToWidth(120)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/echo.png', function(oimg) {
-            img = oimg.set({left: 1300, top: 130, angle: 3})
+            img = oimg.set({left: 1210, top: 130, angle: 3})
             img.scaleToWidth(140)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/fjs.png', function(oimg) {
-            img = oimg.set({left: 1420, top: 200, angle: -7})
+            img = oimg.set({left: 1310, top: 200, angle: -7})
             img.scaleToWidth(140)
             canvas2.add(img)
         })
 
         fabric.Image.fromURL('/images/do.png', function(oimg) {
-            img = oimg.set({left: 1485, top: 70, angle: 6})
+            img = oimg.set({left: 1375, top: 70, angle: 6})
             img.scaleToWidth(140)
             canvas2.add(img)
         })
@@ -322,7 +322,7 @@
         })
 
         fabric.Image.fromURL('/images/porkbun.png', function(oimg) {
-            img = oimg.set({left: 1240, top: 170, angle: 18})
+            img = oimg.set({left: 1240, top: 270, angle: 18})
             img.scaleToWidth(200)
             canvas2.add(img)
         })
@@ -364,9 +364,11 @@
         })
 
         fabric.Image.fromURL('/images/owl.png', function(oimg) {
-            img = oimg.set({left: 970, top: 10})
+            img = oimg.set({left: 850, top: 10})
             img.scaleToWidth(200)
             canvas2.add(img)
+            canvas2.setActiveObject(img);
+            canvas2.renderAll();
         })
 
         canvas2.add(rect2, circle2, text2);
@@ -405,7 +407,7 @@
                     />
                     <div class="p-6">
                         <h3 class="text-xl font-bold text-slate-800 mb-2">Calypso Blue Pool & Spa</h3>
-                        <p class="text-slate-600 mb-4">An eCommerce website built for a client using MedusaJS backend, Supabase PostgreSQL, and Next.js with TailwindCSS. Hosted on Heroku and Vercel. Expected release on Nov 25</p>
+                        <p class="text-slate-600 mb-4">An eCommerce website built for a client using MedusaJS, Supabase PostgreSQL, and Next.js with TailwindCSS. Hosted on Heroku and Vercel.</p>
                         <div class="flex flex-wrap gap-2 mb-4">
                             <span class="px-3 py-1 bg-teal-100 text-teal-800 rounded-full text-sm">MedusaJS</span>
                             <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">Supabase PostgreSQL</span>
@@ -414,9 +416,12 @@
                             <span class="px-3 py-1 bg-slate-800 text-white rounded-full text-sm">Vercel</span>
                             <span class="px-3 py-1 bg-red-100 text-red-800 rounded-full text-sm">Redis</span>
                         </div>
-                        <span class="inline-flex items-center px-4 py-2 bg-slate-500 text-white rounded-lg hover:bg-slate-700 transition-colors">
-                            Coming Soon
-                        </span>
+                        <a href="https://store.cbpsbackend.fyi" target="_blank" class="inline-flex items-center px-4 py-2 mt-3 bg-slate-800 text-white rounded-lg transition-colors hover:bg-gradient-to-l hover:from-blue-500 hover:to-sky-700">
+                            Go to Site
+                            <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </a>
                     </div>
                 </div>
 
@@ -468,7 +473,7 @@
                             <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">SQLite</span>
                             <span class="px-3 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm">W3.CSS</span>
                         </div>
-                        <a href="https://communityitproject.org" class="inline-flex items-center px-4 py-2 bg-slate-800 text-white rounded-lg transition-colors hover:bg-gradient-to-r hover:from-sky-300 hover:to-yellow-100 hover:text-black">
+                        <a href="https://communityitproject.org" target="_blank" class="inline-flex items-center px-4 py-2 bg-slate-800 text-white rounded-lg transition-colors hover:bg-gradient-to-r hover:from-sky-300 hover:to-yellow-100 hover:text-black">
                             Go To Site
                             <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
@@ -514,17 +519,16 @@
 
             <div class="mt-16 text-center">
                 <h2 class="text-2xl font-bold text-white mb-8">Let's Connect! </h2>
-                <div class="flex flex-wrap justify-center space-x-4">
+                <div class="flex flex-wrap justify-center gap-4">
 
-                    <a href="https://github.com/Mooshiiee" 
+                    <a href="https://github.com/Mooshiiee" target="_blank"
                     class="px-6 py-3 bg-slate-500 text-white rounded-lg transition-all duration-300 inline-flex items-center hover:bg-gradient-to-r hover:from-purple-600 hover:to-blue-500">
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                             <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd"/>
                         </svg>
                         GitHub
                     </a>
-
-                    <a href="mailto:mooshcor@outlook.com" 
+                    <a href="mailto:mooshcor@outlook.com" target="_blank"
                     class="px-6 py-3 bg-slate-500 text-white rounded-lg transition-all duration-300 inline-flex items-center hover:bg-gradient-to-r hover:from-blue-500 hover:to-cyan-500">
                         <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
@@ -532,7 +536,7 @@
                         mooshcor@outlook.com
                     </a>
 
-                    <a href="./static/resume.pdf" 
+                    <a href="./static/resume.pdf" target="_blank"
                     class="px-6 py-3 bg-slate-500 text-white rounded-lg transition-all duration-300 inline-flex items-center hover:bg-gradient-to-r hover:from-cyan-500 hover:to-teal-500">
                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="m21.44 11.05-9.19 9.19a6 6 0 0 1-8.49-8.49l8.57-8.57A4 4 0 1 1 18 8.84l-8.59 8.57a2 2 0 0 1-2.83-2.83l8.49-8.48"/>
@@ -540,7 +544,7 @@
                         Resume
                     </a>
 
-                    <a href="https://LinkedIn.com/in/mustafabolat1" 
+                    <a href="https://LinkedIn.com/in/mustafabolat1" target="_blank"
                     class="px-6 py-3 bg-slate-500 text-white rounded-lg transition-all duration-300 inline-flex items-center hover:bg-gradient-to-r hover:from-teal-500 hover:to-emerald-500">
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 mr-2">
                             <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect width="4" height="12" x="2" y="9"/><circle cx="4" cy="4" r="2"/>
