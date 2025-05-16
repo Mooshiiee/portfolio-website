@@ -101,7 +101,7 @@ fabric.Image.fromURL('/images/me.jpg', function(oimg) {
 
 // Create static shapes
 const rect2 = new fabric.Rect({
-  left: 100,
+  left: 800,
   top: 100,
   fill: '#3498db',
   width: 60,
@@ -110,7 +110,7 @@ const rect2 = new fabric.Rect({
 });
 
 const circle2 = new fabric.Circle({
-  left: 300,
+  left: 700,
   top: 150,
   fill: '#e74c3c',
   radius: 30,
