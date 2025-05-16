@@ -10,112 +10,362 @@
 </head>
 <body>
 
-    <div class="hero">
-        <canvas id="pt" height="100"></canvas>
+    <!-- 
+    <div class="hero hidden">
+        <canvas id="pt" width="800" height="100"></canvas>
     </div>
-
-    <style>
-    .hero {
-        height: 100px;
-        overflow: hidden; /* This clips anything overflowing */
-    }
-
-    canvas#pt {
-        display: block;
-        height: 100px;
-    }
-
-    </style>
     
-    <script src="pts.js"></script>
+    <script>
+        Pts.quickStart( "#pt", "#ffffff" );
+    
+        (function() {
+          var de = new Delaunay();
+          var triangles = [];
+          var cells = [];
+          var lastPt = new Pt();
+    
+          let repel = (size) => {
+            for (let k = 0, len = de.length; k < len; k++) {
+              for (let i = 0; i < len; i++) {
+                if (i !== k) {
+                  let d = de[k].$subtract(de[i]);
+                  if (d.magnitudeSq() < size * size) {
+                    de[k].subtract(d.$divide(-size / 3));
+                    de[i].subtract(d.$divide(size / 3));
+                  }
+                }
+              }
+            }
+          };
+    
+          space.add({
+            start: (bound) => {
+              de = Create.delaunay(Create.distributeRandom(space.innerBound, 9));
+              triangles = de.delaunay();
+              cells = de.voronoi();
+            },
+    
+            animate: (time, ftime) => {
+              form.strokeOnly("#ff7f50", 1.5).polygons(triangles);
+              form.fill("#007aff").points(de, 6, "circle");
+              form.strokeOnly("#32cd32", 1).polygons(cells);
+    
+              if (de.length >= 100) {
+                de[de.length - 1] = space.pointer;
+                repel(70);
+                triangles = de.delaunay();
+                cells = de.voronoi();
+    
+                let nearIndex = Polygon.nearestPt(de, space.pointer);
+                de.neighbors(nearIndex, true).map((n) => {
+                  form.strokeOnly("rgba(0, 123, 255, 0.9)", 3).polygon(n.triangle);
+                  form.strokeOnly("rgba(0, 123, 255, 0.3)", 1).circle(n.circle);
+                  form.fillOnly("#ffe066").point(n.circle[0], 3);
+                });
+              }
+            },
+    
+            action: (type, x, y) => {
+              if (type === "move" && de.length < 100) {
+                let p = new Pt(x, y);
+                if (lastPt.$subtract(p).magnitudeSq() > 400) {
+                  lastPt = p;
+                  de.push(p);
+                  triangles = de.delaunay();
+                  cells = de.voronoi();
+                }
+              }
+            }
+          });
+    
+          space.bindMouse().bindTouch().play();
+    
+        })();
+    </script>
+    -->
     
     <div class="relative border-t-2 border-orange-400 max-w">
    
-    <div id="featuredBanner">
+    <div id="featuredBanner" class="relative pt-96 sm:pt-0 sm:pb-32">
         <!-- Canvas Container -->
-        <div class="inset-0 max-h-0.5">
+        <div class="absolute inset-0">
             <canvas id="canvasBanner"></canvas>
         </div>
         
-        <div class="flex flex-row">
-            <div class="relative -z-10 max-w-xl text-gray-800 sm:pl-20 pl-0">
-                <div class="px-4 max-w-xl mx-auto">
-                    <h1 class="text-2xl font-bold mb-4 mt-6">About Me</h1>
-                    <h2 class="text-xl font-bold mb-3 mt-5">Hello, my name is <span>Mustafa</span></h2>
-                    <h3 class="text-lg font-bold mb-2 mt-4">I am an aspiring fullstack application developer</h3>
-
-                    <div class="mb-4">Southern Connecticut State University 2025 - BS Computer Science, Minor in Mathematics</div>
-
-                    <h3 class="text-lg font-bold mb-2 mt-4">I recognize the power us developers have to shape the land around us</h3>
-
-                    <p class="mb-4">
-                        "This principle, which concerns the quality of life of all people, 
-                        affirms an obligation of computing professionals,<br /> both individually and 
-                        collectively, to use their skills for the benefit of society, its members, 
-                        and the environment surrounding them."
-                    </p>
-                    <p class="mb-4">
-                        "People—including users, customers, colleagues, and others affected 
-                        directly or indirectly—should always be the central concern in 
-                        computing"
-                    </p>
-                    <sub class="text-sm">- ACM Code of Ethics</sub>
-                </div>
-
-                <div class="flex flex-wrap justify-evenly pt-0">
-                    <div>
-                        <img
-                            alt="Photo of Mustafa Bolat posing in front of an old marble fountain"
-                            id="meImage"
-                            src="./images/me.jpg"
-                            height="10"
-                            width="10"
-                            class=" pt-36 px-20"
-                            style="height: 100px;"
-                        />
-                    </div>
-                </div>
+        <!-- Overlaid Text -->
+        <div class="relative -z-10s max-w-7xl mx-auto text-gray-800">
+            <div class="px-4 max-w-4xl mx-auto">
+                <h1 class="text-2xl font-bold mb-4 mt-6">About Me</h1>
+                <h2 class="text-xl font-bold mb-3 mt-5">Hello, my name is <span>Mustafa</span></h2>
+                <h3 class="text-lg font-bold mb-2 mt-4">I am an aspiring fullstack application developer</h3>
+    
+                <div class="mb-4">Southern Connecticut State University 2025 - BS Computer Science, Minor in Mathematics</div>
+    
+                <h3 class="text-lg font-bold mb-2 mt-4">I recognize the power us developers have to shape the land around us</h3>
+    
+                <p class="mb-4">
+                    "This principle, which concerns the quality of life of all people, 
+                    affirms an obligation of computing professionals,<br /> both individually and 
+                    collectively, to use their skills for the benefit of society, its members, 
+                    and the environment surrounding them."
+                </p>
+                <p class="mb-4">
+                    "People—including users, customers, colleagues, and others affected 
+                    directly or indirectly—should always be the central concern in 
+                    computing"
+                </p>
+                <sub class="text-sm">- ACM Code of Ethics</sub>
             </div>
-            <div style="width: 20vw;"></div>
+
         </div>
     </div>
     
-    <script src="fabric.js"></script>
+    <script>
+        //script to help scroll on mobile
+        (function() {
+          var addListener = fabric.util.addListener,
+                  removeListener = fabric.util.removeListener,
+                  addEventOptions = { passive: false };
 
+          fabric.util.object.extend(fabric.Canvas.prototype, /** @lends fabric.Canvas.prototype */ {
+            _onTouchStart: function(e) {
+              var targetR = this.findTarget(e);
+              !this.allowTouchScrolling && e.preventDefault && e.preventDefault();
+              targetR && e.preventDefault && e.preventDefault();
+              if (this.mainTouchId === null) {
+                this.mainTouchId = this.getPointerId(e);
+              }
+              this.__onMouseDown(e);
+              this._resetTransformEventData();
+              var canvasElement = this.upperCanvasEl,
+              eventTypePrefix = this._getEventPrefix();
+              addListener(fabric.document, 'touchend', this._onTouchEnd, addEventOptions);
+              addListener(fabric.document, 'touchmove', this._onMouseMove, addEventOptions);
+              // Unbind mousedown to prevent double triggers from touch devices
+              removeListener(canvasElement, eventTypePrefix + 'down', this._onMouseDown);
+            }
+          });
+        })();
+
+        // Initialize Fabric canvas to match container size
+        const container = document.querySelector('#featuredBanner');
+        const canvas2 = new fabric.Canvas('canvasBanner', {
+            width: container.offsetWidth,
+            height: container.offsetHeight,
+            allowTouchScrolling: true,
+        });
+    
+        // Create some interactive objects
+        function createRandomObject() {
+            const types = ['rect2', 'circle2', 'triangle2'];
+            const type = types[Math.floor(Math.random() * types.length)];
+            const colors = ['#3498db', '#e74c3c', '#2ecc71', '#f1c40f', '#9b59b6'];
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            
+            let obj;
+            switch(type) {
+                case 'rect2':
+                    obj = new fabric.Rect({
+                        width: 60,
+                        height: 60,
+                        fill: color,
+                        opacity: 0.7
+                    });
+                    break;
+                case 'circle2':
+                    obj = new fabric.Circle({
+                        radius: 30,
+                        fill: color,
+                        opacity: 0.7
+                    });
+                    break;
+                case 'triangle2':
+                    obj = new fabric.Triangle({
+                        width: 60,
+                        height: 60,
+                        fill: color,
+                        opacity: 0.7
+                    });
+                    break;
+            }
+            
+            obj.set({
+                left: Math.random() * (canvas2.width - 60),
+                top: Math.random() * (canvas2.height - 60),
+                cornerColor: '#2c3e50',
+                cornerStrokeColor: '#2c3e50',
+                borderColor: '#2c3e50',
+                cornerSize: 6,
+                transparentCorners: false
+            });
+            
+            return obj;
+        }
+    
+        // Create basic shapes
+        const rect2 = new fabric.Rect({
+            left: 100,
+            top: 100,
+            fill: '#3498db',
+            width: 60,
+            height: 60,
+            opacity: 0.8
+        });
+    
+        const circle2 = new fabric.Circle({
+            left: 300,
+            top: 150,
+            fill: '#e74c3c',
+            radius: 30,
+            opacity: 0.8
+        });
+    
+        // Add text
+        const text2 = new fabric.Text('Made with:', {
+            left: 1300,
+            top: 5,
+            fontFamily: 'Arial',
+            fill: '#2c3e50',
+            fontSize: 20
+        });
+
+        fabric.Image.fromURL('/images/django.png', function(oImg) {
+            img = oImg.set({left: 250, top: 320, angle: -20})
+            img.scaleToWidth(180)
+            canvas2.add(img)
+        });
+
+        fabric.Image.fromURL('/images/me.jpg', function(oimg) {
+            img = oimg.set({left: 650, top: 375, angle:2})
+            img.scaleToWidth(650)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/turso.png', function(oimg) {
+            img = oimg.set({left: 150, top: 350, angle: 10})
+            img.scaleToWidth(230)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/sqlite.png', function(oimg) {
+            img = oimg.set({left: 1290, top: 370, angle: -2})
+            img.scaleToWidth(180)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/mysql.png', function(oimg) {
+            img = oimg.set({left: 1320, top: 450, angle: 11})
+            img.scaleToWidth(180)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/gospider.png', function(oimg) {
+            img = oimg.set({left: 1290, top: 30, angle: -5})
+            img.scaleToWidth(120)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/echo.png', function(oimg) {
+            img = oimg.set({left: 1210, top: 130, angle: 3})
+            img.scaleToWidth(140)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/fjs.png', function(oimg) {
+            img = oimg.set({left: 1310, top: 200, angle: -7})
+            img.scaleToWidth(140)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/do.png', function(oimg) {
+            img = oimg.set({left: 1375, top: 70, angle: 6})
+            img.scaleToWidth(140)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/heroku.png', function(oimg) {
+            img = oimg.set({left: 130, top: 660})
+            img.scaleToWidth(140)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/porkbun.png', function(oimg) {
+            img = oimg.set({left: 1240, top: 270, angle: 18})
+            img.scaleToWidth(200)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/supabase.png', function(oimg) {
+            img = oimg.set({left: 1310, top: 580, angle: 3})
+            img.scaleToWidth(180)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/medusa.png', function(oimg) {
+            img = oimg.set({left: 120, top: 520, angle: -12})
+            img.scaleToWidth(200)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/python.png', function(oimg) {
+            img = oimg.set({left: 130, top: 40, angle: 15})
+            img.scaleToWidth(160)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/js.png', function(oimg) {
+            img = oimg.set({left: 160, top: 200, angle: 15})
+            img.scaleToWidth(120)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/ts.png', function(oimg) {
+            img = oimg.set({left: 225, top: 75, angle: -12})
+            img.scaleToWidth(160)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/flask.png', function(oimg) {
+            img = oimg.set({left: 280, top: 570, angle: -12})
+            img.scaleToWidth(110)
+            canvas2.add(img)
+        })
+
+        fabric.Image.fromURL('/images/owl.png', function(oimg) {
+            img = oimg.set({left: 850, top: 10})
+            img.scaleToWidth(200)
+            canvas2.add(img)
+            canvas2.setActiveObject(img);
+            canvas2.renderAll();
+        })
+
+        canvas2.add(rect2, circle2, text2);
+
+        // Add multiple random objects
+        for (let i = 0; i < 10; i++) {
+            canvas2.add(createRandomObject());
+        }
+    
+        // Make canvas responsive
+        window.addEventListener('resize', () => {
+            canvas2.setDimensions({
+                width: container.offsetWidth,
+                height: container.offsetHeight
+            });
+        });
+    </script>
+
+    
     </div>
 
-    <div class="bg-gradient-to-b from-white via-slate-400 via-50% to-slate-900 pb-16">
+    <div class="bg-gradient-to-b from-white via-slate-400 via-50% to-slate-900 py-16">
         
     <!-- Modern Projects Section with gradient background -->
-    <div class="">
+    <div class="pt-8">
         <div class="max-w-7xl mx-auto px-4">
             <h2 class="text-3xl font-bold text-slate-800 mb-12 text-center">Projects</h2>
             
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
-                <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all hover:shadow-2xl">
-                    <img
-                    alt=""
-                    src="./images/lr_image.png"
-                    class="min-h-52 w-full object-cover rounded-t-xl"
-                    />
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-slate-800 mb-2">LocalReason</h3>
-                        <p class="text-slate-600 mb-4">A local-first application for prompt expansion on coding related tasks with easy-to-use RAG</p>
-                        <div class="flex flex-wrap gap-2 mb-4">
-                            <span class="px-3 py-1 bg-green-100 text-green-800 rounded-full text-sm">FastAPI</span>
-                            <span class="px-3 py-1 bg-gray-100 text-gray-800 rounded-full text-sm">Ollama</span>
-                            <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm">Vite</span>
-                            <span class="px-3 py-1 bg-slate-800 text-white rounded-full text-sm">ShadCN</span>
-                        </div>
-                        <a href="https://github.com/Mooshiiee/csweekly_echo" target="_blank" class="inline-flex items-center px-4 py-2 mt-3 bg-green-600 text-white rounded-lg transition-colors hover:bg-gradient-to-r hover:from-green-500 hover:to-teal-500">
-                            Download
-                            <svg class="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.48 2 2 6.48 2 12c0 4.42 2.87 8.16 6.84 9.5.5.1.66-.21.66-.47 0-.23-.01-.85-.01-1.67-2.78.6-3.37-1.34-3.37-1.34-.45-1.14-1.1-1.44-1.1-1.44-.9-.61.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.64.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02A9.5 9.5 0 0 1 12 6.8a9.47 9.47 0 0 1 2.51.34c1.9-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.6 1.03 2.69 0 3.85-2.34 4.69-4.57 4.93.36.31.69.91.69 1.83 0 1.32-.01 2.39-.01 2.72 0 .26.17.58.67.48C19.14 20.16 22 16.42 22 12c0-5.52-4.48-10-10-10z"/>
-                            </svg>
-                        </a>
-                    </div>
-                </div>
 
                 <div class="bg-white rounded-xl shadow-lg overflow-hidden transition-all hover:shadow-2xl">
                     <img
@@ -274,5 +524,66 @@
         </div>
     </div>
     </div>
+
+    <!-- New tech stack canvas at bottom -->
+    <div class="py-8 bg-slate-900">
+        <div class="max-w-7xl mx-auto px-4">
+            <h2 class="text-2xl font-bold text-white mb-4 text-center">Tech Stack</h2>
+            <div class="relative h-64">
+                <canvas id="techCanvas"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Initialize tech stack canvas
+        const techContainer = document.querySelector('#techCanvas').parentElement;
+        const techCanvas = new fabric.Canvas('techCanvas', {
+            width: techContainer.offsetWidth,
+            height: techContainer.offsetHeight,
+            backgroundColor: '#1e293b'
+        });
+
+        // Load all tech stack images
+        const techImages = [
+            {url: '/images/django.png', width: 100},
+            {url: '/images/turso.png', width: 100},
+            {url: '/images/sqlite.png', width: 100},
+            {url: '/images/mysql.png', width: 100},
+            {url: '/images/gospider.png', width: 80},
+            {url: '/images/echo.png', width: 80},
+            {url: '/images/fjs.png', width: 80},
+            {url: '/images/do.png', width: 80},
+            {url: '/images/heroku.png', width: 80},
+            {url: '/images/porkbun.png', width: 100},
+            {url: '/images/supabase.png', width: 100},
+            {url: '/images/medusa.png', width: 100},
+            {url: '/images/python.png', width: 100},
+            {url: '/images/js.png', width: 80},
+            {url: '/images/ts.png', width: 100},
+            {url: '/images/flask.png', width: 80},
+            {url: '/images/owl.png', width: 100}
+        ];
+
+        // Position images in grid
+        techImages.forEach((img, i) => {
+            fabric.Image.fromURL(img.url, function(oImg) {
+                const col = i % 4;
+                const row = Math.floor(i / 4);
+                const x = 100 + col * 200;
+                const y = 50 + row * 100;
+                
+                oImg.set({
+                    left: x,
+                    top: y,
+                    angle: 0,
+                    originX: 'center',
+                    originY: 'center'
+                });
+                oImg.scaleToWidth(img.width);
+                techCanvas.add(oImg);
+            });
+        });
+    </script>
 </body>
 </html>
