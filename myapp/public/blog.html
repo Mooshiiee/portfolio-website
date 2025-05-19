@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./static/output.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/pts/dist/pts.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <title>Mustafa's Blog</title>
+</head>
+<body>
+
+    <div class="hero">
+        <canvas id="pt" height="100"></canvas>
+    </div>
+
+    <style>
+    .hero {
+        height: 100px;
+        overflow: hidden; /* This clips anything overflowing */
+    }
+
+    canvas#pt {
+        display: block;
+        height: 100px;
+    }
+
+    </style>
+    
+    <script src="pts.js"></script>
+    
+    <div class="relative border-t-2 h-dvh border-orange-400 bg-gradient-to-b from-white via-slate-400 via-100% to-slate-900">
+        
+        <div class="container h-dvh bg-white p-6 max-w-5xl mx-auto py-4">
+            
+            <div class="flex justify-between">
+                <h1 class="text-3xl font-bold text-gray-800 mt-12 mb-8">Mustafa's Blog</h1>
+                <p class="text-2xl text-gray-600 mb-12">Let's Learn Together!</p>           
+            </div>
+
+
+            <ul class="list-none">
+                <div class="mb-5">
+                    <h2 class="text-xl font-bold text-gray-700"><a href="#"></a></h2>
+                    <p class="text-xl text-gray-600">Date: May 19, 2025</p>
+                    <p class="text-xl text-gray-600">Topics: AI/ML, LoRa, Finetuning</p>
+                </div>
+            </ul>
+
+        </div>
+
+    </div>
+</body>
+</html>
